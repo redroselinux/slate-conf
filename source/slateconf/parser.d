@@ -14,6 +14,7 @@ SlateConf parse(string config) {
   SlateConf result;
 
   long loc = 1;
+  string key1_prefix;
   foreach (line; splitLines(config)) {
     line = strip(line);
     if (line == "") continue;
@@ -21,10 +22,21 @@ SlateConf parse(string config) {
     ConfigNode line_result;
 
     if (line[0] == '{') {
-      // TODO: groups
-      throw new NotImplementedError("groups are not yet implemented");
+      auto gr_name = line.strip("{").strip("}") ~ ".";
+
+      if (gr_name != "end") key1_prefix = gr_name;
+      else {
+        if (key1_prefix == "") {
+          throw new SlateConfParseError("cannot use {end} without a group : " ~ to!string(loc));
+        }
+
+        auto gr_parts = key1_prefix.split(".");
+        gr_parts.length -= 1;
+      }
     } else {
       auto parts = line.split("::");
+
+      parts[0] = key1_prefix ~ parts[0];
       foreach (ref part; parts) part = strip(part);
 
       bool list = parts[0].startsWith("[");
@@ -81,4 +93,5 @@ unittest {
   }
 
   assert(result["key"] == "value");
+  assert(result["my_group.key"] == "value2");
 }
