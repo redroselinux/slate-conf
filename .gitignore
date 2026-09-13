@@ -1,0 +1,17 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/slate-conf
+slate-conf.so
+slate-conf.dylib
+slate-conf.dll
+libslate-conf.a
+slate-conf.a
+slate-conf.lib
+slate-conf-test-*
+*.exe
+*.pdb
+*.o
+*.obj
+*.lst

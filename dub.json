@@ -1,0 +1,10 @@
+{
+	"description": "A config file format.",
+	"license": "Unlicense",
+	"authors": [
+		"mostypc123"
+	],
+	"copyright": "Copyright © 2026, mostypc123",
+	"name": "slateconf",
+	"targetType": "library"
+}
