@@ -11,6 +11,10 @@ struct ConfigNode {
   string[] keys;
   ConfigNodeValue value;
   bool is_arr_or_s;
+
+  this(string file_path) {
+    this = parseFile(file_path);
+  }
 }
 
 class SlateConfParseError : Exception {
