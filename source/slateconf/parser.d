@@ -8,6 +8,20 @@ class NotImplementedError : Exception {
   }
 }
 
+/**
+ * Parse a Slateconf file.
+ *
+ * Params:
+ *   - `config` = The whole file to parse.
+ *
+ * Throws:
+ *   - `SlateConfParseError`: on parse errors
+ *   - `NotImplementedError`: in pre-0.1 versions; will be removed
+ *
+ * See_Also:
+ *   - `slateconf.parseFile`
+ *   - `slateconf.SlateConf`
+ */
 SlateConf parse(string config) {
   import std.string : splitLines, split, strip, startsWith, endsWith;
   import std.algorithm : canFind;
@@ -15,7 +29,7 @@ SlateConf parse(string config) {
 
   SlateConf result;
 
-  long loc = 1;
+  ulong loc = 1;
   string key1_prefix;
 
   string expand(string text) {
@@ -110,6 +124,22 @@ SlateConf parse(string config) {
   return result;
 }
 
+/**
+ * Wrapper of `parse()` that reads a file path and returns the `SlateConf`.
+ *
+ * This function is used by the constructor of the SlateConf struct and
+ * therefore you should use that instead.
+ *
+ * Params:
+ *   path = File path to read.
+ *
+ * Throws:
+ *   Propagates any exceptions thrown by `std.file.readText()` (e.g. file not
+ *   found) or `slateconf.parse()` (e.g. SlateConfParseError).
+ *
+ * See_Also:
+ *   - `slateconf.SlateConf`
+ */
 SlateConf parseFile(string path) {
   import std.file : readText;
   return parse(readText(path));
