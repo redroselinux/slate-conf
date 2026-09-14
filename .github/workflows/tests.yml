@@ -10,4 +10,4 @@ jobs:
       - uses: dlang-community/setup-dlang@v2
         with:
           compiler: dmd-latest
-      - run: dub test
+      - run: dub test -debug
