@@ -14,8 +14,9 @@ struct ConfigNode {
 }
 
 class SlateConfParseError : Exception {
-  this(string msg, string file = __FILE__, size_t line = __LINE__) {
-    super(msg, file, line);
+  this(string msg, long error_at_line, string file = __FILE__, size_t line = __LINE__) {
+    import std.conv : to;
+    super(msg ~ ": " ~ to!string(error_at_line), file, line);
   }
 }
 
@@ -27,6 +28,7 @@ class SlateConfOpIndexError : Exception {
 
 struct SlateConf {
   ConfigNode[] values;
+  string[string] macros;
 
   import std.variant : Algebraic;
   Algebraic!(string, string[]) opIndex(string val) {

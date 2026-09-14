@@ -1,8 +1,11 @@
 -- This file is used by the unit tests.
 -- DO NOT EDIT, THEY EXPECT THE EXACT VALUES AS IN HERE.
 
-key :: value
-key1 :: key2 :: value
+@valalala :: value
+@val :: *valalala
+
+key :: *val
+key1 :: key2 :: *val
 [my_list] :: thing :: thing :: hello
 -- comment
 {my_group}
