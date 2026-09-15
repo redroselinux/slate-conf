@@ -43,9 +43,18 @@ SlateConf parse(string config) {
         if (auto v = name in result.macros) w = *v;
       } else if (w.length && w[0] == '!') {
         import std.file : readText;
-        debug writeln("mixing in list from file; " ~ text);
+
+        debug writeln("mixing in list from file");
         auto file = text.strip().split("::")[1].replace("!", "").strip();
-        string content = readText(file).strip();   // strip trailing newline first
+        string[] content_lines = readText(file).strip().splitLines();
+
+        string[] filtered;
+        foreach (line; content_lines) {
+          if (!line.startsWith("--"))
+            filtered ~= line;
+        }
+
+        string content = filtered.join("\n");
         w = content.replace("\n", "::");
       }
     }
