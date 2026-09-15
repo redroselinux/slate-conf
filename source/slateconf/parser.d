@@ -17,13 +17,14 @@ class NotImplementedError : Exception {
  * Throws:
  *   - `SlateConfParseError`: on parse errors
  *   - `NotImplementedError`: in pre-0.1 versions; will be removed
+ *   - runs `std.file.readText`, need to catch `FileException`
  *
  * See_Also:
  *   - `slateconf.parseFile`
  *   - `slateconf.SlateConf`
  */
 SlateConf parse(string config) {
-  import std.string : splitLines, split, strip, startsWith, endsWith;
+  import std.string : splitLines, split, strip, startsWith, endsWith, replace;
   import std.algorithm : canFind;
   import std.array : join;
 
@@ -40,6 +41,12 @@ SlateConf parse(string config) {
 
         auto name = w.strip("*");
         if (auto v = name in result.macros) w = *v;
+      } else if (w.length && w[0] == '!') {
+        import std.file : readText;
+        debug writeln("mixing in list from file; " ~ text);
+        auto file = text.strip().split("::")[1].replace("!", "").strip();
+        string content = readText(file).strip();   // strip trailing newline first
+        w = content.replace("\n", "::");
       }
     }
     return words.join(" ");
@@ -91,6 +98,10 @@ SlateConf parse(string config) {
       bool list = parts[0].startsWith("[");
       if (list && !parts[0].endsWith("]")) {
         throw new SlateConfParseError("[ in list declaration not closed", loc);
+      }
+
+      if (list) {
+        parts[0] = parts[0][1 .. $-1];
       }
 
       foreach (i, part; parts) {
@@ -166,4 +177,5 @@ unittest {
 
   checkExpr!(`result["key"] == "value"`)();
   checkExpr!(`result["my_group.key"] == "value2"`)();
+  checkExpr!(`result["other_list"] == ["test"]`)();
 }

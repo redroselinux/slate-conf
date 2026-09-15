@@ -1,6 +1,8 @@
 module slateconf;
 public import parser;
 
+// While writing this, I was arguing with a person who said D means dicks.
+
 /// Handles values in a ConfigNode. Check which value to use in is_arr_or_s from the ConfigNode.
 private union ConfigNodeValue {
   string s;
