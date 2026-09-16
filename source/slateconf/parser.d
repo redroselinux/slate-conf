@@ -1,4 +1,4 @@
-module parser;
+module slateconf.parser;
 import slateconf;
 import std.stdio;
 

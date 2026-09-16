@@ -1,5 +1,5 @@
 module slateconf;
-public import parser;
+public import slateconf.parser;
 
 // While writing this, I was arguing with a person who said D means dicks.
 
